@@ -17,7 +17,6 @@
 	.text
 
 	.global	_start
-FUNC(_start)
 _start:
 	ldr	r0, [sp, #4]
 	ldr	r1, [sp]

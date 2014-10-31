@@ -4,14 +4,32 @@
  *
  * @author Mike Kasick <mkasick@andrew.cmu.edu>
  * @date   Sun, 07 Oct 2007 01:53:16 -0400
- *
+ * 
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-10-29
+ *
+ * @author Shan Gao <shang@andrew.cmu.edu>
+ * @date 2014-10-30
  */
 
 #include <asm.h>
+#include <../include/bits/swi.h>
+#include <../include/bits/errno.h>
 
-	.file "read.S"
+	.file	"read.S"
+	.text
 
+	.global	read
+	.global errno
 FUNC(read)
-	@ Add code here.  Put your names at the top.
+read:
+	ldr	r3, =errno
+	swi	READ_SWI
+	cmp	r0, #0
+	bge	ret
+	neg	r0, r0
+	str	r0, [r3]
+	mov	r0, #-1
+ret:
+	mov	pc, lr
+
