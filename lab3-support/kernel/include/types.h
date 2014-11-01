@@ -1,6 +1,6 @@
 /**
  * @file   types.h
- * 
+ *
  * @brief  Standard Integer Types and Limits
  *         Corresponds to ANSI C99 stdint.h, stddef.h and limits.h
  *
@@ -13,7 +13,6 @@
 
 #ifndef _BITS_TYPES_H_
 #define _BITS_TYPES_H_
-
 
 #ifndef ASSEMBLER
 
@@ -81,6 +80,5 @@ typedef uint32_t            uintptr_t;
 #define INT_MIN      INT32_MIN
 #define LONG_MIN     INT32_MIN
 #define LLONG_MIN    INT64_MIN
-
 
 #endif /* _BITS_TYPES_H_ */

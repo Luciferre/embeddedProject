@@ -5,6 +5,7 @@
  *  Authors: jian wang<jianw3@andrew.cmu.edu>
  *  Date: 12:30 Am Oct. 31th 2014
  */
+#include <types.h>
 #include <arm/reg.h>
 #include <arm/interrupt.h>
 #include <arm/timer.h>
@@ -16,7 +17,7 @@ void timerIrqSetup(){
     /*clear the OSCR*/
     reg_clear(OSTMR_OSCR_ADDR, 0xffffffff);
     /*set the value of OSMR 0 to 10ms*/
-    reg_write(OSTMR_OSMR_ADDR(0),TIMER_COUNT);
+    reg_write(OSTMR_OSMR_ADDR(0),OSTMR_COUNT);
     /*enable the OSMR0 */
     reg_set(OSTMR_OIER_ADDR, OSTMR_OIER_E0);
 }
