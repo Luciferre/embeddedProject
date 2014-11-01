@@ -1,3 +1,9 @@
+/*
+ * Author: shang <shang@andrew.cmu.edu>
+ *        
+ * Date:   2014-10-30
+ */
+
 #include "bits/errno.h"
 #include "bits/swi.h"
 #include "bits/fileno.h"

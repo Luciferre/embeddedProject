@@ -1,6 +1,6 @@
-#include "../include/bits/errno.h"
-#include "../include/bits/swi.h"
-#include "../include/bits/fileno.h"
+#include "bits/errno.h"
+#include "bits/swi.h"
+#include "bits/fileno.h"
 #include <exports.h>
 
 #define SDRAMStart 0xa0000000

@@ -21,6 +21,7 @@
 
 	.global	write
 	.global errno
+FUNC(write)
 write:
 
 	ldr	r3, =errno

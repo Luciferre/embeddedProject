@@ -15,12 +15,12 @@ ssize_t write(int fd, const void *buf, size_t count)
 
 	if(fd != STDOUT_FILENO)
 	{	
-		printf("error ebadf");
+		//printf("error ebadf");
 		return -EBADF;
 	}
 	if(( (((unsigned)buf >ROMEnd)&&((unsigned)buf < SDRAMStart)) || ((unsigned)buf > SDRAMEnd) || ( (((unsigned)buf + count) > ROMEnd)&&(((unsigned)buf + count) < SDRAMStart)) ) || (((unsigned)buf + count) > SDRAMEnd))
 	{
-		printf("error efault");
+		//printf("error efault");
 		return -EFAULT;
 	}	
 	for( i = 0; i < count; i++)

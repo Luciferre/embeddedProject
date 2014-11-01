@@ -1,0 +1,3 @@
+#include <exports.h>
+
+extern volatile unsigned long sys_time;
