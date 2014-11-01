@@ -22,19 +22,23 @@ uint32_t global_data;
 int ksp = 0;
 int r8 =0;
 int err =0;
+unsigned int irqStack[1024];
+unsigned long irqStackTop;
 extern void S_Handler();
 extern void irqHandlerAsm();
 ssize_t write(int fd, void* buf, size_t count);
 extern int user_mode();
+extern void prepareIrqStack(unsigned long);
+extern void timerIrqSetup();
 
 int kmain(int argc, char** argv, uint32_t table)
 {
 	app_startup(); /* bss is valid after this point */
 	global_data = table;
+	//printf("Switch to User mode.......................\n");
 
-	unsigned * swivec = (unsigned *)0x08;
-    unsigned *irqVec = (unsigned *)0x14;
-	//printf("*swivec: %x\n", *swivec);
+	unsigned * swivec = (unsigned *)(EX_SWI*4);
+    unsigned *irqVec = (unsigned *)(EX_IRQ*4);
 	unsigned oldvec1, oldvec2;
     unsigned oldIrqVec1, oldIrqVec2;
 	int *uboot_swi;
@@ -42,8 +46,8 @@ int kmain(int argc, char** argv, uint32_t table)
 	unsigned offset;
 	int *swiaddr;
     int *irqAddr;
-	//int *uboot_swi = (int *)0x5c0009c0;
 	int result = 0;
+    irqStackTop = (unsigned long)(irqStack+1024-1);
 	offset = ((unsigned int)(*swivec) - 0xe51FF000);
 
 	if((offset & 0xFFFFF000) == 0x800000){
@@ -82,8 +86,9 @@ int kmain(int argc, char** argv, uint32_t table)
    *irqAddr = 0xe51ff004; //ldr pc,[pc,#-4]
    *(irqAddr + 1) =(int) &irqHandlerAsm;
 
+   prepareIrqStack(irqStackTop);
+   timerIrqSetup();
 	//user mode
-	//printf("Switch to User mode.......................\n");
 	result = user_mode(argc, argv);
 
 	//restore
