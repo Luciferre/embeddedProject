@@ -2,7 +2,7 @@
  *kerner.c Kernel main (entry) function
  *
  * Author: shang <shang@andrew.cmu.edu>
- *        
+ *
  * Date:   2014-10-30
  */
 
@@ -23,6 +23,7 @@ int ksp = 0;
 int r8 =0;
 int err =0;
 extern void S_Handler();
+extern void irqHandlerAsm();
 ssize_t write(int fd, void* buf, size_t count);
 extern int user_mode();
 
@@ -32,27 +33,23 @@ int kmain(int argc, char** argv, uint32_t table)
 	global_data = table;
 
 	unsigned * swivec = (unsigned *)0x08;
+    unsigned *irqVec = (unsigned *)0x14;
 	//printf("*swivec: %x\n", *swivec);
 	unsigned oldvec1, oldvec2;
+    unsigned oldIrqVec1, oldIrqVec2;
 	int *uboot_swi;
+    int *uboot_irq;
 	unsigned offset;
 	int *swiaddr;
+    int *irqAddr;
 	//int *uboot_swi = (int *)0x5c0009c0;
 	int result = 0;
-	// check ldr pc, [pc, #imm12]
 	offset = ((unsigned int)(*swivec) - 0xe51FF000);
-	//printf("offset: %x\n", offset);
-
-	//int i =0;
-	//for (i=0; i<argc; i++)
-	//	printf("argvs: %s\n", argv[i]);
 
 	if((offset & 0xFFFFF000) == 0x800000){
 		uboot_swi = (int *)((int)swivec + (offset & 0xFFF) + 0x8);
-		//printf("uboot_swi: %x %x %x\n", uboot_swi, swivec, (offset &0xFFF));
 	}else if((offset & 0xFFFFF000) == 0x0) {
 		uboot_swi = (int *)((int)swivec - (offset & 0xFFF) + 0x8);
-		//printf("uboot_swi: %x\n", uboot_swi);
 	}
 	else{
 		printf("Installation of handler failed.\n");
@@ -62,11 +59,29 @@ int kmain(int argc, char** argv, uint32_t table)
 	swiaddr =(int *) *uboot_swi;
 	oldvec1 = *swiaddr;
 	oldvec2 = *(swiaddr + 1);
-	//printf("oldvec1 oldvec2: %x %x\n", oldvec1, oldvec2);
 	//new swi address
 	*swiaddr = 0xe51ff004; //ldr pc,[pc,#-4]
 	*(swiaddr + 1) =(int) &S_Handler;
-	//printf("new ubootswi: %x %x\n", *swiaddr, *(swiaddr+1));
+    /*wire in the irq handler*/
+    offset = ((unsigned int)(*irqVec) - 0xe51FF000);
+    if((offset & 0xFFFFF000) == 0x800000){
+        uboot_irq = (int *)((int)irqVec + (offset & 0xFFF) + 0x8);
+    }
+    else if((offset & 0xFFFFF000) == 0x0) {
+        uboot_irq = (int *)((int)irqVec - (offset & 0xFFF) + 0x8);
+   }
+   else{
+        printf("Installation of handler failed.\n");
+        return 0x0badc0de;
+   }
+   //store old swi addresses
+   irqAddr =(int *) *uboot_irq;
+   oldIrqVec1 = *irqAddr;
+   oldIrqVec2 = *(irqAddr + 1);
+   //new swi address
+   *irqAddr = 0xe51ff004; //ldr pc,[pc,#-4]
+   *(irqAddr + 1) =(int) &irqHandlerAsm;
+
 	//user mode
 	//printf("Switch to User mode.......................\n");
 	result = user_mode(argc, argv);
@@ -74,6 +89,8 @@ int kmain(int argc, char** argv, uint32_t table)
 	//restore
 	*swiaddr = oldvec1;
 	*(swiaddr + 1)= oldvec2;
+    *irqAddr = oldIrqVec1;
+    *(irqAddr + 1) = oldIrqVec2;
 	//printf("swivec: %x\n", *swivec);
 	return err;
 }
