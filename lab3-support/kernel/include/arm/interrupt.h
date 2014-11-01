@@ -51,6 +51,7 @@
 
 #define NUM_INTERRUPTS  32
 
+#define INTERRUPT_MASK 0x80
 #ifndef ASSEMBLER
 
 /* C code goes here.  Add your group name at the top! */
