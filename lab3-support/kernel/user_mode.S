@@ -20,7 +20,7 @@ user_mode:
         str     r8, [r3]	
 	mrs	r4, cpsr
 	bic	r4, r4, #0xff
-	orr	r4, r4, #0xd0
+	orr	r4, r4, #0x50
 	msr	cpsr, r4
 
 	

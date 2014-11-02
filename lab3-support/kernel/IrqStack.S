@@ -14,6 +14,7 @@ prepareIrqStack:
     msr cpsr,r1
     mov sp,r0  @set the IRQ mode stack
     ORR r1,r2 @switch back to SVC mode
+    EOR r1,#0x80
     msr cpsr,r1
     LDMFD sp!,{r1,r2}
     mov pc,lr
