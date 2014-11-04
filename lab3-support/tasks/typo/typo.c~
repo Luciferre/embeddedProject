@@ -8,23 +8,34 @@
  */
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
+
 #define BLOCK 100
 
 int main(int argc, char** argv)
 {
 	char buffer[BLOCK+1];
-	char prompt[30] = "Please type characters within 100 length!\n";
 	int length;
-	unsigned long systime;
 
 	while(1){
-		write(STDOUT_FILENO, prompt, sizeof(prompt));
-		systime = time();
 		length = read(STDIN_FILENO, buffer, BLOCK);
-		systime = time()- systime;
-		write(STDOUT_FILENO, buffer, length+1);
-		printf("%d.%ds\n", (int) systime/1000, (int) systime % 1000);	
+		if(error == 0)
+			exit(0);	
+		else if(error <0)
+			exit(1);
+		else{
+			for(i = 0; i < error; i++)
+			{
+				char tmp = caesar(buffer[i]);
+				buffer[i] = tmp;
+			}
+			//buffer[i] = '\0';
+			error =  write(STDOUT_FILENO, buffer, i+1);
+		
+			if(error < 0)
+				exit(1);
+			for(i = 0; i < BLOCK; i++)
+				buffer[i] = '\0';
+		}
 	}
 	return 0;
 }
