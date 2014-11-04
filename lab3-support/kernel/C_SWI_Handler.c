@@ -10,6 +10,8 @@
 void exit(int status);
 ssize_t read(int fd, void* buf, size_t count);
 ssize_t write(int fd, void* buf, size_t count);
+unsigned long time(void);
+void sleep(unsigned long millis);
 
 void C_SWI_Handler(unsigned num, unsigned* regs) 
 {
@@ -31,7 +33,12 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			//printf("Write: %x %x %d \n", (int)regs[0], (int )regs[1], (int )regs[2]);
 			regs[0] = write((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
-	
+		case TIME_SWI:
+			regs[0] = time();
+			break;		
+		case SLEEP_SWI:
+			sleep((unsigned long)regs[0]);
+			break;
 		default:
 			puts("instruction is unrecognized\n");
 			exit(0x0badc0de);
