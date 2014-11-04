@@ -38,6 +38,7 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			break;		
 		case SLEEP_SWI:
 			sleep((unsigned long)regs[0]);
+			break;
 		default:
 			puts("instruction is unrecognized\n");
 			exit(0x0badc0de);
