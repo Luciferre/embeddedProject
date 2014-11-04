@@ -8,7 +8,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 #define BLOCK 100
 
 char caesar(char c){
@@ -26,6 +26,7 @@ char caesar(char c){
 
 int main(int argc, char *argv[]) {
 	char buffer[BLOCK+1];
+        unsigned long startTime=0;
 
 	int i = 0, j =0, k=0, error;
 	//write(STDOUT_FILENO, argc,
@@ -40,6 +41,8 @@ int main(int argc, char *argv[]) {
 		write(STDOUT_FILENO, "\n", 1);	
 	}
 	while(1){
+                startTime = time(); 
+                printf("start time %lu\n",startTime);
 		error = read(STDIN_FILENO, buffer, BLOCK);
 		if(error == 0)
 			exit(0);	

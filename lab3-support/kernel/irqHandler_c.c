@@ -4,8 +4,8 @@
 #include <exports.h>
 #include <arm/interrupt.h>
 
-volatile unsigned long system_time;
-volatile unsigned long time_drift;
+volatile unsigned long system_time=0;
+volatile unsigned long time_drift=0;
 void irqHandler(){
     unsigned volatile int oscrValue, icprValue;
     
