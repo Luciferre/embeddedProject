@@ -14,7 +14,7 @@
 int main(int argc, char** argv)
 {
 	char buffer[BLOCK+1];
-	char prompt[] = "Please type characters within 100 length!\n";
+	char prompt[30] = "Please type characters within 100 length!\n";
 	int length;
 	unsigned long systime;
 
