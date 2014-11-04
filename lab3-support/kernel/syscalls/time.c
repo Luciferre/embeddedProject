@@ -5,6 +5,5 @@ extern volatile unsigned long system_time;
 
 unsigned long time()
 {
-        printf("%lu\n",system_time);
-	return system_time*TIMER_RESOLUTION;
+	return system_time*((unsigned long)TIMER_RESOLUTION);
 }

@@ -14,12 +14,14 @@
 int main(int argc, char** argv)
 {
 	char buffer[BLOCK+1];
-	char prompt[] = "Please type characters within 100 length!\n";
+	char prompt1[] = "Please type characters within 100 length!\n";
+        char prompt2[] = ">";
 	int length;
 	unsigned long systime;
-
+	write(STDOUT_FILENO, prompt1, sizeof(prompt1));
+      
 	while(1){
-		write(STDOUT_FILENO, prompt, sizeof(prompt));
+		write(STDOUT_FILENO, prompt2, sizeof(prompt2));
 		systime = time();
 		length = read(STDIN_FILENO, buffer, BLOCK);
 		systime = time()- systime;
