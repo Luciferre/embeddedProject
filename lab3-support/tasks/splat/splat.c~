@@ -2,11 +2,31 @@
  *
  * @brief Displays a spinning cursor.
  *
+ * Authors: shang <shang@andrew.cmu.edu>          
+ * Date:    9:22 Nov 3
  * Links to libc.
  */
 
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 int main(int argc, char** argv)
 {
-	/* Add code here -- put your names at the top. */
+	while(1)
+	{
+		write(STDOUT_FILENO, "|", 1);
+		sleep(200);
+		puts("\b \b");
+		write(STDOUT_FILENO, "/", 1);
+		sleep(200);
+		puts("\b \b");
+		write(STDOUT_FILENO, "-", 1);
+		sleep(200);
+		puts("\b \b");
+		write(STDOUT_FILENO, "\\", 1);
+		sleep(200);
+		puts("\b \b");
+	}
 	return 0;
 }
