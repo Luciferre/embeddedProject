@@ -12,7 +12,7 @@ S_Handler:
 	SUB	sp, sp, #4		@leave room on stack for SPSR
 	STMFD	sp!, {r0-r12, lr}	@store user's gp registers
 	mrs     r4, cpsr
-        orr     r4, r4, #0x50
+        eor     r4, r4, #0x80
         msr     cpsr, r4
 
 	ldr     r3, =r8
