@@ -10,8 +10,6 @@
 void exit(int status);
 ssize_t read(int fd, void* buf, size_t count);
 ssize_t write(int fd, void* buf, size_t count);
-unsigned long time(void);
-void sleep(unsigned long millis);
 
 void C_SWI_Handler(unsigned num, unsigned* regs) 
 {
