@@ -10,7 +10,7 @@ extern volatile unsigned long system_time;
 
 void sleep(unsigned long millis)
 {
-    unsigned int end_time = system_time + (unsigned int) millis;
+    unsigned long end_time = system_time + millis/10;
     while (system_time < end_time);
     return;
 }
