@@ -4,7 +4,7 @@
  * Author: shang <shang@andrew.cmu.edu>
  *         jian wang <jianw3@andrew.cmu.edu>
  *
- * Date:   2014-10-30
+ * Date:   2014-10-30 2014
  */
 
 #include <exports.h>
@@ -83,7 +83,7 @@ int kmain(int argc, char** argv, uint32_t table)
    oldIrqVec1 = *irqAddr;
    oldIrqVec2 = *(irqAddr + 1);
    //new swi address
-   *irqAddr = 0xe51ff004; //ldr pc,[pc,#-4]
+   *irqAddr = 0xe51ff004;
    *(irqAddr + 1) =(int) &irqHandlerAsm;
 
    prepareIrqStack(irqStackTop);

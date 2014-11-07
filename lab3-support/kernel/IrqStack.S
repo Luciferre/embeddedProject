@@ -1,7 +1,7 @@
 @ IrqStack.S: This file is the assembly code is to Prepare
 @ the stack for IRQ mode
-@ Authors: Group Member 1: jian wang <jianw3>
-@ Group Member 2: shan gao<>
+@ Authors: jian wang <jianw3@adnrew.cmu.edu>
+@          shan gao <shang@andrew.cmu.edu>
 @ Date: Oct 30, 2014 11:00 PM
 #include <asm.h>
     .file "IrqStack.S"
