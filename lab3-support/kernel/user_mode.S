@@ -1,7 +1,8 @@
-/*
+/* user_mode.S: set usermode stack and switch to user mode
  * Author: shang <shang@andrew.cmu.edu>
- *        
- * Date:   2014-10-30
+ *         jian wang <jianw3@andrew.cmu.edu>
+ *
+ * Date:   2014-10-30 2014
  */
 
 #include <bits/swi.h>
@@ -17,13 +18,12 @@ user_mode:
 	ldr	r3, =ksp
 	str	sp, [r3]
 	ldr     r3, =r8
-        str     r8, [r3]	
+    str     r8, [r3]
 	mrs	r4, cpsr
 	bic	r4, r4, #0xff
 	orr	r4, r4, #0x50
 	msr	cpsr, r4
 
-	
 	ldr	sp, =0xa3000000
 	@set up user stack
 	stmfd	sp!,{r0}

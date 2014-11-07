@@ -2,8 +2,9 @@
  *kerner.c Kernel main (entry) function
  *
  * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  *
- * Date:   2014-10-30
+ * Date:   2014-10-30 2014
  */
 
 #include <exports.h>
@@ -35,7 +36,6 @@ int kmain(int argc, char** argv, uint32_t table)
 {
 	app_startup(); /* bss is valid after this point */
 	global_data = table;
-	//printf("Switch to User mode.......................\n");
 
 	unsigned * swivec = (unsigned *)(EX_SWI*4);
     unsigned *irqVec = (unsigned *)(EX_IRQ*4);
@@ -83,7 +83,7 @@ int kmain(int argc, char** argv, uint32_t table)
    oldIrqVec1 = *irqAddr;
    oldIrqVec2 = *(irqAddr + 1);
    //new swi address
-   *irqAddr = 0xe51ff004; //ldr pc,[pc,#-4]
+   *irqAddr = 0xe51ff004;
    *(irqAddr + 1) =(int) &irqHandlerAsm;
 
    prepareIrqStack(irqStackTop);
@@ -96,6 +96,5 @@ int kmain(int argc, char** argv, uint32_t table)
 	*(swiaddr + 1)= oldvec2;
     *irqAddr = oldIrqVec1;
     *(irqAddr + 1) = oldIrqVec2;
-	//printf("swivec: %x\n", *swivec);
 	return err;
 }

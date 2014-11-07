@@ -1,7 +1,9 @@
-/*
+/* S_Handler.S: prepare to call the SWI c handler.
+                restore R8 and save other registers
  * Author: shang <shang@andrew.cmu.edu>
- *        
- * Date:   2014-10-30
+ *         jian wang <jianw3@andrew.cmu.edu>
+ *
+ * Date:   2014-10-30  2014
  */
 
 	.file "S_Handler.S"
@@ -12,13 +14,12 @@ S_Handler:
 	SUB	sp, sp, #4		@leave room on stack for SPSR
 	STMFD	sp!, {r0-r12, lr}	@store user's gp registers
 	mrs     r4, cpsr
-        eor     r4, r4, #0x80
-        msr     cpsr, r4
+    eor     r4, r4, #0x80
+    msr     cpsr, r4
 
 	ldr     r3, =r8
-        ldr     r8, [r3]
-	
-	@ldr	r8, [sp, #60]
+    ldr     r8, [r3]
+
 	MRS	r2, spsr		@get SPSR into gp registers
 	STR	r2, [sp, #14*4]		@store SPSR above gp registers
 	MOV	r1, sp			@pointer to parameters on stack

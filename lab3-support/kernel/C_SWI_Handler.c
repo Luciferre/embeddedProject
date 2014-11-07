@@ -1,8 +1,10 @@
 /*
  *
  * Author: shang <shang@andrew.cmu.edu>
- *        
- * Date:   9:08	OCT 15
+ *         jian wang <jianw3@andrew.cmu.edu>
+ *
+ *
+ * Date:   9:08	OCT 15 2014
  */
 #include <bits/fileno.h>
 #include <exports.h>
@@ -13,29 +15,25 @@ ssize_t write(int fd, void* buf, size_t count);
 unsigned long time(void);
 void sleep(unsigned long millis);
 
-void C_SWI_Handler(unsigned num, unsigned* regs) 
+void C_SWI_Handler(unsigned num, unsigned* regs)
 {
-	//printf("Enter handler......\n");
 	switch(num)
 	{
 		//exit
 		case EXIT_SWI:
-			//printf("exit......%x\n", (int) regs[0]);
 			exit(regs[0]);
 			break;
 		//read
 		case READ_SWI:
-			//printf("Read: %x %x %d \n", (int)regs[0], (int )regs[1], (int )regs[2]);
 			regs[0] = read((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
 		//write
 		case WRITE_SWI:
-			//printf("Write: %x %x %d \n", (int)regs[0], (int )regs[1], (int )regs[2]);
 			regs[0] = write((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
 		case TIME_SWI:
 			regs[0] = time();
-			break;		
+			break;
 		case SLEEP_SWI:
 			sleep((unsigned long)regs[0]);
 			break;
