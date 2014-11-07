@@ -1,0 +1,6 @@
+PROGS_DANCE_OBJS := dance.o
+PROGS_DANCE_OBJS := $(PROGS_DANCE_OBJS:%=$(TDIR)/dance/%)
+ALL_OBJS += $(PROGS_DANCE_OBJS)
+
+$(TDIR)/bin/dance : $(TSTART) $(PROGS_DANCE_OBJS) $(TLIBC)
+
