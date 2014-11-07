@@ -31,6 +31,7 @@ ssize_t write(int fd, void* buf, size_t count);
 extern int user_mode();
 extern void prepareIrqStack(unsigned long);
 extern void timerIrqSetup();
+extern void disableInterrupt();
 
 int kmain(int argc, char** argv, uint32_t table)
 {
@@ -96,5 +97,14 @@ int kmain(int argc, char** argv, uint32_t table)
 	*(swiaddr + 1)= oldvec2;
     *irqAddr = oldIrqVec1;
     *(irqAddr + 1) = oldIrqVec2;
+    __asm
+    (
+        "stmfd sp!, {r1};\
+         mrs r1, cpsr;\
+         orr   r1, #0x80;\
+         msr cpsr,r1;\
+         ldmfd sp!, {r1};"
+    );
+         
 	return err;
 }
