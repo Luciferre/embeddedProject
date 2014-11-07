@@ -2,6 +2,7 @@
  *kerner.c Kernel main (entry) function
  *
  * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  *
  * Date:   2014-10-30
  */
@@ -35,19 +36,18 @@ int kmain(int argc, char** argv, uint32_t table)
 {
 	app_startup(); /* bss is valid after this point */
 	global_data = table;
-	//printf("Switch to User mode.......................\n");
 
 	unsigned * swivec = (unsigned *)(EX_SWI*4);
-    unsigned *irqVec = (unsigned *)(EX_IRQ*4);
+    	unsigned *irqVec = (unsigned *)(EX_IRQ*4);
 	unsigned oldvec1, oldvec2;
-    unsigned oldIrqVec1, oldIrqVec2;
+    	unsigned oldIrqVec1, oldIrqVec2;
 	int *uboot_swi;
-    int *uboot_irq;
+    	int *uboot_irq;
 	unsigned offset;
 	int *swiaddr;
-    int *irqAddr;
+    	int *irqAddr;
 	int result = 0;
-    irqStackTop = (unsigned long)(irqStack+1024-1);
+    	irqStackTop = (unsigned long)(irqStack+1024-1);
 	offset = ((unsigned int)(*swivec) - 0xe51FF000);
 
 	if((offset & 0xFFFFF000) == 0x800000){
@@ -66,17 +66,17 @@ int kmain(int argc, char** argv, uint32_t table)
 	//new swi address
 	*swiaddr = 0xe51ff004; //ldr pc,[pc,#-4]
 	*(swiaddr + 1) =(int) &S_Handler;
-    /*wire in the irq handler*/
-    offset = ((unsigned int)(*irqVec) - 0xe51FF000);
-    if((offset & 0xFFFFF000) == 0x800000){
+    	/*wire in the irq handler*/
+    	offset = ((unsigned int)(*irqVec) - 0xe51FF000);
+    	if((offset & 0xFFFFF000) == 0x800000){
         uboot_irq = (int *)((int)irqVec + (offset & 0xFFF) + 0x8);
-    }
-    else if((offset & 0xFFFFF000) == 0x0) {
+    	}
+    	else if((offset & 0xFFFFF000) == 0x0) {
         uboot_irq = (int *)((int)irqVec - (offset & 0xFFF) + 0x8);
-   }
+   	}
    else{
-        printf("Installation of handler failed.\n");
-        return 0x0badc0de;
+	printf("Installation of handler failed.\n");
+	return 0x0badc0de;
    }
    //store old swi addresses
    irqAddr =(int *) *uboot_irq;
@@ -96,6 +96,5 @@ int kmain(int argc, char** argv, uint32_t table)
 	*(swiaddr + 1)= oldvec2;
     *irqAddr = oldIrqVec1;
     *(irqAddr + 1) = oldIrqVec2;
-	//printf("swivec: %x\n", *swivec);
 	return err;
 }
